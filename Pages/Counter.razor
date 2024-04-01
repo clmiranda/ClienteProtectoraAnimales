@@ -1,0 +1,57 @@
+﻿@page "/counter"
+
+<PageTitle>Mi aplicacion de contador</PageTitle>
+
+<h1>Mi Contador</h1>
+
+<p role="status">Valor actual: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">+1</button>
+<button class="btn btn-primary" @onclick="DecrementCount">-1</button>
+
+@code {
+    private int currentCount = 10;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+    private void DecrementCount()
+    {
+        currentCount--;
+    }
+}
+
+
+@foreach (var country in this.countries)
+{
+    <div class="mb-2">
+        <span class="form-label">@country.Name</span>
+        <input type="text" class="form-control" value="@country.CapitalCity" @oninput="(e) => UpdateCity(country, e)" />
+    </div>
+}
+
+@foreach (var country in this.countries)
+{
+    <div class="mb-2">
+        @country.Name - @country.CapitalCity
+    </div>
+}
+
+@code {
+    private List<Country> countries = new List<Country>
+    {
+        new Country {Name = "UK"},
+        new Country {Name = "France"},
+        new Country {Name = "Spain"}
+    };
+
+    private void UpdateCity(Country country, ChangeEventArgs e)
+        => country.CapitalCity = e.Value?.ToString() ?? null;
+
+    public class Country
+    {
+        public required string Name { get; set; }
+        public string? CapitalCity { get; set; }
+    }
+}
